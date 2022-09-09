@@ -1,11 +1,12 @@
 from django.utils import dateparse
 
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from accidents.models import *
 from authentication.models import CustomUser
+from accidents.serializers import *
 
 class CreatAccidentReport(APIView):
     def post(self, request, user_id):
@@ -37,6 +38,43 @@ class CreatAccidentReport(APIView):
         return Response(data, status = code)
             
         
-        
-        
-        
+class ListTurns(generics.ListAPIView):
+    
+    serializer_class = TurnsSerializer
+    def get_queryset(self):
+        return Turns.objects.all()
+
+
+class ListBusinessUnity(generics.ListAPIView):
+    
+    serializer_class = BusinessUnitySerializer
+    def get_queryset(self):
+        return BusinessUnity.objects.all()
+    
+
+class ListArea(generics.ListAPIView):
+    
+    serializer_class = AreaSerializer
+    def get_queryset(self):
+        return Area.objects.all()
+
+
+class ListLineNumber(generics.ListAPIView):
+    
+    serializer_class = LineNumberSerializer
+    def get_queryset(self):
+        return LineNumber.objects.all()
+    
+
+class ListAccidentType(generics.ListAPIView):
+    
+    serializer_class = AccidentTypeSerializer
+    def get_queryset(self):
+        return AccidentType.objects.all()
+    
+# falta modificar
+class ListAccidents(generics.ListAPIView):
+    serializer_class = AccidentsSerializer
+    def get_queryset(self):
+        return Accidents.objects.all()
+    
