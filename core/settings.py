@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-from telnetlib import AUTHENTICATION
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,7 +14,7 @@ SECRET_KEY = 'django-insecure-ji-lu82$3%%)auyr+ejcp1myhn*##p@@7xxybv5pmgmy+v)%no
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['kpi.syncronik.com', '*']
 
 
 # Application definition
