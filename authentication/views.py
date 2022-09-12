@@ -42,10 +42,10 @@ class Login(APIView):
         
         if verify_pass:
             try:
-                Token.objects.get(user = user)
+                token = Token.objects.get(user = user)
             except Token.DoesNotExist:
-                Token.objects.create(user = user)
-            data = {'code': 202, 'msg': 'Aceptado'}
+                token = Token.objects.create(user = user)
+            data = {'code': 202, 'msg': 'Aceptado', 'id': user.id, 'first_name': user.first_name, 'email': user.email, 'token': str(token.key)}
             code = status.HTTP_202_ACCEPTED
         else:    
             data = {'code': 401, 'msg': 'Credenciales incorrectas'}
