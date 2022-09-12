@@ -33,6 +33,68 @@ class AccidentTypeSerializer(serializers.ModelSerializer):
         
 
 class AccidentsSerializer(serializers.ModelSerializer):
+
+    unity = serializers.SerializerMethodField('get_unity')
+    area = serializers.SerializerMethodField('get_area')
+    line = serializers.SerializerMethodField('get_line')
+    turn = serializers.SerializerMethodField('get_turn')
+    accident = serializers.SerializerMethodField('get_type_acc')
+
     class Meta:
         model = Accidents
-        fields = '__all__'
+        fields = ['id', 'unity', 'area', 'line', 'turn', 'accident', 'description', 'date']
+
+    def get_unity(self, Accidents):
+        try:
+            data = {
+                'id': Accidents.business_unity.id,
+                'business_unity': Accidents.business_unity.name
+            }
+        except:
+            data = None
+        return data
+
+    def get_area(self, Accidents):
+        try:
+            data = {
+                'id': Accidents.area.id,
+                'area': Accidents.area.name
+            }
+        except:
+            data = None
+        return data
+    
+    def get_line(self, Accidents):
+        try:
+            data = {
+                'id': Accidents.line_number.id,
+                'line': Accidents.line_number.name
+            }
+        except:
+            data = None
+        return data
+    
+    def get_turn(self, Accidents):
+        try:
+            data = {
+                'id': Accidents.turn.id,
+                'start': Accidents.turn.start,
+                'end': Accidents.turn.end
+            }
+        except:
+            data = None
+        return data
+
+    def get_type_acc(self, Accidents):
+        try:
+            data = {
+                'id': Accidents.accident_type.id,
+                'accident_type': Accidents.accident_type.name
+            }
+        except:
+            data = None
+        return data
+
+
+
+

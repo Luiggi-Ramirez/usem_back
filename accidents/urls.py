@@ -8,4 +8,5 @@ urlpatterns = [
     path('list-area', ListArea.as_view()),
     path('list-line-number', ListLineNumber.as_view()),
     path('list-accident-type', ListAccidentType.as_view()),
+    path('all/', ListAccidents.as_view()),
 ]
