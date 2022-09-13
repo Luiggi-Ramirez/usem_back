@@ -130,3 +130,6 @@ dmypy.json
 
 # script bat
 rs.bat
+
+gun.sh
+static/

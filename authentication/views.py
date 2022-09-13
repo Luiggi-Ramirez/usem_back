@@ -45,7 +45,7 @@ class Login(APIView):
                 token = Token.objects.get(user = user)
             except Token.DoesNotExist:
                 token = Token.objects.create(user = user)
-            data = {'code': 202, 'msg': 'Aceptado', 'id': user.id, 'first_name': user.first_name, 'email': user.email, 'token': str(token.key)}
+            data = {'code': 202, 'msg': 'Aceptado', 'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email, 'token': str(token.key)}
             code = status.HTTP_202_ACCEPTED
         else:    
             data = {'code': 401, 'msg': 'Credenciales incorrectas'}

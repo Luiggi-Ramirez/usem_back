@@ -59,4 +59,20 @@ class Incident(APIView):
 
         
 
-        
+
+class ListIncidents(generics.ListAPIView):
+    
+    serializer_class = IncidentDetailsSerializer
+    def get_queryset(self):
+        queryset = IncidentDetails.objects.all()
+        return queryset
+
+
+class ListIncidentsById(generics.ListAPIView):
+
+    serializer_class = IncidentDetailsSerializer
+    def get_queryset(self):
+        incident_id = self.request.query_params.get('incident-id')
+        queryset = IncidentDetails.objects.filter(id = incident_id)
+        return queryset
+
