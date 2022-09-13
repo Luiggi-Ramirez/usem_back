@@ -6,8 +6,5 @@ from accidents.models import *
 
 
 admin.site.register(IncidentDetails)
-admin.site.register(Turns)
-admin.site.register(BusinessUnity)
-admin.site.register(Area)
-admin.site.register(LineNumber)
+
 

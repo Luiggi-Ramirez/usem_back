@@ -20,22 +20,26 @@ class CreateIncidentReport(APIView):
 
 
 
-class Incident(generics.ListAPIView):
+class Incident(APIView):
     '''view to list incidents according to their query parameters'''
-    serializer_class = IncidentDetailsSerializer
-   
-    def get_queryset(self):
+    
+    def get(self, request, *args, **kwargs):
         queryset = IncidentDetails.objects.all()
 
         count = self.request.GET.get('count')
-        date = self.request.query_params.get('date')
+        from_date = self.request.query_params.get('from_date')
+        to_date = self.request.query_params.get('to_date')
         turn = self.request.query_params.get('turn')
         business_unity = self.request.query_params.get('business_unity')
         line_number = self.request.query_params.get('line_number')
         area = self.request.query_params.get('area')
 
-        if date:
-            queryset = queryset.filter(date=date)
+        "true" == True
+
+        if from_date:
+            queryset = queryset.filter(date=from_date)
+        if from_date and to_date:
+            queryset = queryset.filter(date__range=[from_date, to_date])
         if turn:
             queryset = queryset.filter(turn=turn)
         if business_unity:
@@ -44,7 +48,15 @@ class Incident(generics.ListAPIView):
             queryset = queryset.filter(line_number=line_number)
         if area: 
             queryset = queryset.filter(area=area)
+        if count == "true": 
+            reported_incidents = {
+                "reported_incidents" : len(queryset) }
+            return Response(reported_incidents, status=status.HTTP_200_OK)
+        
+        
+        serializer= IncidentDetailsSerializer(queryset,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-        return queryset
+        
 
         
