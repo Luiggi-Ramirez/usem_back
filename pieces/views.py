@@ -47,10 +47,17 @@ class ProductionData(APIView):
                 ok_pieces.append(ok)
                 bad_pieces.append(bad)
                 
+            ok = sum(ok_pieces)
+            bad = sum(bad_pieces)
+
+            total_production = ok + bad
+            ok_pieces_percent = ok * 100 / total_production
+            bad_pieces_percent = bad * 100 / total_production
+
             
             total_pieces = {
-                "ok_pieces" : sum(ok_pieces),
-                "bad_pieces" : sum(bad_pieces)
+                "ok_pieces_percent" : round(ok_pieces_percent),
+                "bad_pieces_percent" : round(bad_pieces_percent)
             }
 
             return Response(total_pieces, status=status.HTTP_200_OK)
