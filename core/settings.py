@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'incidents',
     'pieces',
     'downtime',
+    'OT',
 ]
 
 MIDDLEWARE = [
