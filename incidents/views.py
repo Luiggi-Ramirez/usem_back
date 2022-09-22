@@ -34,11 +34,9 @@ class Incident(APIView):
         line_number = self.request.query_params.get('line_number')
         area = self.request.query_params.get('area')
 
-        "true" == True
+        
 
-        if from_date:
-            queryset = queryset.filter(date=from_date)
-        if from_date and to_date:
+        if from_date or to_date:
             queryset = queryset.filter(date__range=[from_date, to_date])
         if turn:
             queryset = queryset.filter(turn=turn)
@@ -52,10 +50,15 @@ class Incident(APIView):
             reported_incidents = {
                 "reported_incidents" : len(queryset) }
             return Response(reported_incidents, status=status.HTTP_200_OK)
+
+        '''No-data handler'''
+        if not queryset:
+            return Response({"message" : "no data"}, status=status.HTTP_404_NOT_FOUND)
+        else:
         
         
-        serializer= IncidentDetailsSerializer(queryset,many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer= IncidentDetailsSerializer(queryset,many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         
 

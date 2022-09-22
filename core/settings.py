@@ -33,6 +33,9 @@ INSTALLED_APPS = [
     'authentication',
     'accidents',
     'incidents',
+    'pieces',
+    'downtime',
+    'OT',
 ]
 
 MIDDLEWARE = [
