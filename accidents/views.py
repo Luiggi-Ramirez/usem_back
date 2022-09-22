@@ -89,3 +89,11 @@ class ListAccidentsById(generics.ListAPIView):
         return queryset
 
 
+class ListAccidentsByType(generics.ListAPIView):
+
+    serializer_class = AccidentsSerializer
+    def get_queryset(self):
+        type_accident_id = self.request.query_params.get('type-accident-id')
+        queryset = Accidents.objects.filter(accident_type__id = type_accident_id)
+        return queryset
+
