@@ -11,4 +11,5 @@ urlpatterns = [
     path('all/', ListAccidents.as_view()),
     path('details', ListAccidentsById.as_view()),
     path('list-accident-by-type', ListAccidentsByType.as_view()),
+    path('list-accident-by-date', ListAccidentsByDate.as_view()),
 ]

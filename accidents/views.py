@@ -97,3 +97,11 @@ class ListAccidentsByType(generics.ListAPIView):
         queryset = Accidents.objects.filter(accident_type__id = type_accident_id)
         return queryset
 
+
+class ListAccidentsByDate(generics.ListAPIView):
+
+    serializer_class = AccidentsSerializer
+    def get_queryset(self):
+        date = dateparse.parse_date(self.request.query_params.get('date'))
+        queryset = Accidents.objects.filter(date = date)
+        return queryset
