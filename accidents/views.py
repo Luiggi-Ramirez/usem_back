@@ -102,6 +102,7 @@ class ListAccidentsByDate(generics.ListAPIView):
 
     serializer_class = AccidentsSerializer
     def get_queryset(self):
-        date = dateparse.parse_date(self.request.query_params.get('date'))
-        queryset = Accidents.objects.filter(date = date)
+        from_date = dateparse.parse_date(self.request.query_params.get('from-date'))
+        to_date = dateparse.parse_date(self.request.query_params.get('to-date'))
+        queryset = Accidents.objects.filter(date__range = [from_date, to_date])
         return queryset
