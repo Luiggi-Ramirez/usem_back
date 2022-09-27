@@ -26,17 +26,18 @@ class ProductionData(APIView):
         '''Mandatory Query Params'''
         from_date = self.request.query_params.get('from_date')
         to_date = self.request.query_params.get('to_date')
+        total_pieces_percent = self.request.query_params.get('total_pieces_percent')
 
         if not from_date or not to_date: 
             return Response({"message": "missing query param"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             queryset = queryset.filter(date__range=[from_date, to_date])
 
-        
         if not queryset:
             '''No-data handler'''
             return Response({"message" : "no data"}, status=status.HTTP_404_NOT_FOUND)
-        else:
+
+        if total_pieces_percent == 'true':  
             pieces_number = queryset.values()
             
             ok_pieces = []
@@ -54,12 +55,15 @@ class ProductionData(APIView):
             ok_pieces_percent = ok * 100 / total_production
             bad_pieces_percent = bad * 100 / total_production
 
-            
+          
             total_pieces = {
                 "ok_pieces_percent" : round(ok_pieces_percent),
                 "bad_pieces_percent" : round(bad_pieces_percent)
             }
-
             return Response(total_pieces, status=status.HTTP_200_OK)
+        else:
+            serializer= ProductionSerializer(queryset,many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
     
         
