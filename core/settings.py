@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'pieces',
     'downtime',
     'OT',
+    'fake_api',
 ]
 
 MIDDLEWARE = [
