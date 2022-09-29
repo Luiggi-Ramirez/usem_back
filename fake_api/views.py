@@ -108,6 +108,17 @@ class Incident(APIView):
             "line_number": 3,
             "turn": 3
         },
+        {
+            "id": 6,
+            "title": "Lámparas dañadas",
+            "description": "No encienden correctamente",
+            "date": "2022-09-29",
+            "user": 1,
+            "business_unity": 7,
+            "area": 3,
+            "line_number": 3,
+            "turn": 3
+        }
         ]
 
         return Response(incidents_list, status=status.HTTP_200_OK)
@@ -132,7 +143,7 @@ class Downtime(APIView):
             "line_number": 3,
             "start": "07:00:00",
             "end": "09:45:00",
-            "date": "2022-09-06",
+            "date": "2022-09-08",
             "line_name": "896",
             "downtime": 165
         },
@@ -141,7 +152,7 @@ class Downtime(APIView):
             "line_number": 3,
             "start": "07:00:00",
             "end": "09:45:00",
-            "date": "2022-09-11",
+            "date": "2022-09-10",
             "line_name": "896",
             "downtime": 165
         },
@@ -150,7 +161,7 @@ class Downtime(APIView):
             "line_number": 3,
             "start": "19:00:00",
             "end": "19:23:00",
-            "date": "2022-09-19",
+            "date": "2022-09-11",
             "line_name": "896",
             "downtime": 23
         },
@@ -159,7 +170,7 @@ class Downtime(APIView):
             "line_number": 3,
             "start": "22:00:00",
             "end": "22:45:00",
-            "date": "2022-09-19",
+            "date": "2022-09-14",
             "line_name": "896",
             "downtime": 45
         },
@@ -168,7 +179,7 @@ class Downtime(APIView):
             "line_number": 3,
             "start": "07:00:00",
             "end": "09:45:00",
-            "date": "2022-09-23",
+            "date": "2022-09-16",
             "line_name": "896",
             "downtime": 165
         },
@@ -177,7 +188,7 @@ class Downtime(APIView):
             "line_number": 3,
             "start": "07:00:00",
             "end": "09:45:00",
-            "date": "2022-09-26",
+            "date": "2022-09-19",
             "line_name": "896",
             "downtime": 165
         },
@@ -186,7 +197,7 @@ class Downtime(APIView):
             "line_number": 3,
             "start": "19:00:00",
             "end": "19:23:00",
-            "date": "2022-09-26",
+            "date": "2022-09-22",
             "line_name": "896",
             "downtime": 23
         },
@@ -224,7 +235,7 @@ class Pieces(APIView):
             "id": 4,
             "is_ok": 900,
             "is_bad": 200,
-            "date": "2022-09-03",
+            "date": "2022-09-06",
             "user": 1,
             "business_unity": 7,
             "area": 2,
@@ -235,7 +246,7 @@ class Pieces(APIView):
             "id": 5,
             "is_ok": 400,
             "is_bad": 50,
-            "date": "2022-09-04",
+            "date": "2022-09-09",
             "user": 1,
             "business_unity": 7,
             "area": 2,
@@ -246,7 +257,7 @@ class Pieces(APIView):
             "id": 6,
             "is_ok": 800,
             "is_bad": 200,
-            "date": "2022-09-06",
+            "date": "2022-09-12",
             "user": 1,
             "business_unity": 7,
             "area": 2,
@@ -258,7 +269,7 @@ class Pieces(APIView):
             "id": 7,
             "is_ok": 600,
             "is_bad": 400,
-            "date": "2022-09-06",
+            "date": "2022-09-15",
             "user": 1,
             "business_unity": 6,
             "area": 2,
@@ -269,7 +280,7 @@ class Pieces(APIView):
             "id": 8,
             "is_ok": 900,
             "is_bad": 200,
-            "date": "2022-09-07",
+            "date": "2022-09-18",
             "user": 1,
             "business_unity": 7,
             "area": 2,
@@ -280,7 +291,7 @@ class Pieces(APIView):
             "id": 9,
             "is_ok": 400,
             "is_bad": 50,
-            "date": "2022-09-09",
+            "date": "2022-09-21",
             "user": 1,
             "business_unity": 7,
             "area": 2,
@@ -291,7 +302,7 @@ class Pieces(APIView):
             "id": 10,
             "is_ok": 800,
             "is_bad": 200,
-            "date": "2022-09-09",
+            "date": "2022-09-24",
             "user": 1,
             "business_unity": 7,
             "area": 2,
@@ -307,11 +318,11 @@ class FirstFive(APIView):
 
     def get(self, request):
         first_five = [
-         {
-            "id": 10,
-            "is_ok": 800,
-            "is_bad": 200,
-            "date": "2022-09-09",
+        {
+            "id": 9,
+            "is_ok": 400,
+            "is_bad": 50,
+            "date": "2022-09-21",
             "user": 1,
             "business_unity": 7,
             "area": 2,
@@ -330,22 +341,22 @@ class FirstFive(APIView):
             "turn": 3
         },
         {
-            "id": 9,
-            "is_ok": 400,
-            "is_bad": 50,
-            "date": "2022-09-09",
+            "id": 10,
+            "is_ok": 800,
+            "is_bad": 200,
+            "date": "2022-09-24",
             "user": 1,
             "business_unity": 7,
             "area": 2,
             "line_number": 3,
             "turn": 2
         },
-        {
+       {
             "user": 1,
             "line_number": 3,
             "start": "19:00:00",
             "end": "19:23:00",
-            "date": "2022-09-28",
+            "date": "2022-09-22",
             "line_name": "896",
             "downtime": 23
         },
