@@ -17,6 +17,7 @@ class CreateOperationTimeReport(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
 
+
 class OperationTimeView(APIView):
     '''View to list line operation time in hours'''
     def get(self, request):
@@ -52,34 +53,54 @@ class OperationTimeView(APIView):
             
             total_ot = []
             total_res = {}
+
+
+            def save_result(result):
+                '''convert the result in hours and save it in a new property called
+                "operation_time" in the serializer object'''
+                serialized_data[i]['operation_time'] = {
+                    "hour(s)": round(result.total_seconds() / 3600),
+                    "minutes": round(result.total_seconds() / 60 % 60)
+                    }
+
+                '''convert the result in hours and save it in the list
+                "total_dt" to add all the results and get the total operation time'''
+                total_ot.append(result.total_seconds() / 3600)
+
+                #get the name of the line to save it as a property in the json that will be sent as a response
+                total_res["line"] = serialized_data[i]["line_name"]
+
+
             for i in range(len(qset_dict)):
                 '''Access to the attributes "start"-"end" from all the objects in the query results'''
                 start = qset_dict[i]['start']
                 end = qset_dict[i]['end']
 
                 # calculation to get the difference time
-                result = timedelta(hours=end.hour, minutes=end.minute) - timedelta(hours=start.hour, minutes=start.minute)
-
-                '''convert the result in hours and save it in a new property called
-                "operation_time" in the serializer'''
-                serialized_data[i]['operation_time'] = round(result.total_seconds() / 3600)
-
-                '''convert the result in hours and save it in the list
-                 "total_dt" to add all the results and get the total operation time'''
-                total_ot.append(round(result.total_seconds() / 3600))
-
-                #get the name of the line to save it as a property in the json that will be sent as a response
-                total_res["line"] = serialized_data[i]["line_name"]
+                end_hour = timedelta(hours=end.hour, minutes=end.minute)
+                start_hour = timedelta(hours=start.hour, minutes=start.minute)
+    
+                if start_hour > end_hour:
+                    result = timedelta(days=1, hours=end.hour, minutes=end.minute) - timedelta(hours=start.hour, minutes=start.minute)
+                    
+                    save_result(result)
+                else:
+                    result = end_hour - start_hour
+                    save_result(result)
+                    
                 
-
+            
             total_operation_time = sum(total_ot) # sum of all the results to obtain the total operation time
-
+            print(total_operation_time)
             # Save the total operation time in the json that will be sent as a response
-            total_res["total_op_time"] = total_operation_time 
+            total_res["total_op_time"] = {
+                    "hour(s)": round(total_operation_time),
+                    "minutes": round(total_operation_time * 60 % 60)
+                    }
         
             if total_line_ot == 'true':
             
                 return Response(total_res, status=status.HTTP_200_OK)
             
-
+        
             return Response(serialized_data, status=status.HTTP_200_OK)
