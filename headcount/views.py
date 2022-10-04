@@ -53,7 +53,7 @@ class TotalHeadcount(APIView):
             "men": len(queryset.filter(worker__gender__in="1")),
             "women": len(queryset.filter(worker__gender__in="2"))
         }
-        print(people_working)
+        
 
         # serializer= PeopleOnTurnSerializer(queryset,many=True)
         
