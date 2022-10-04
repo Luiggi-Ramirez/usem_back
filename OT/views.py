@@ -59,7 +59,7 @@ class OperationTimeView(APIView):
                 '''convert the result in hours and save it in a new property called
                 "operation_time" in the serializer object'''
                 serialized_data[i]['operation_time'] = {
-                    "hour(s)": round(result.total_seconds() / 3600),
+                    "hours": round(result.total_seconds() / 3600),
                     "minutes": round(result.total_seconds() / 60 % 60)
                     }
 
@@ -94,7 +94,7 @@ class OperationTimeView(APIView):
             print(total_operation_time)
             # Save the total operation time in the json that will be sent as a response
             total_res["total_op_time"] = {
-                    "hour(s)": round(total_operation_time),
+                    "hours": round(total_operation_time),
                     "minutes": round(total_operation_time * 60 % 60)
                     }
         
