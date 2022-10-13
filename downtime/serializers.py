@@ -17,13 +17,16 @@ class DowntimeDetailsSerializer(serializers.ModelSerializer):
 
 class DowntimeDetailsSerializerRO(serializers.ModelSerializer):
 
+    user = serializers.SerializerMethodField('get_user')
     line = serializers.SerializerMethodField('get_line')    
 
     class Meta:
         model = DowntimeDetails
-        fields = ['id', 'line', 'start', 'end', 'date']
+        fields = ['id','user', 'line', 'start', 'end', 'date']
 
-    
+    def get_user(self, DowntimeDetails):
+        return DowntimeDetails.user.username
+
     def get_line(self, DowntimeDetails):
         try:
             data = {

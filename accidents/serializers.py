@@ -34,6 +34,7 @@ class AccidentTypeSerializer(serializers.ModelSerializer):
 
 class AccidentsSerializer(serializers.ModelSerializer):
 
+    user = serializers.SerializerMethodField('get_user')
     unity = serializers.SerializerMethodField('get_unity')
     area = serializers.SerializerMethodField('get_area')
     line = serializers.SerializerMethodField('get_line')
@@ -42,7 +43,10 @@ class AccidentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Accidents
-        fields = ['id', 'unity', 'area', 'line', 'turn', 'accident', 'description', 'date']
+        fields = ['id', 'user', 'unity', 'area', 'line', 'turn', 'accident', 'description', 'date']
+
+    def get_user(self, Accidents):
+        return Accidents.user.username
 
     def get_unity(self, Accidents):
         try:

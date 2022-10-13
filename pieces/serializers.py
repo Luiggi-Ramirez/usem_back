@@ -10,6 +10,7 @@ class ProductionSerializer(serializers.ModelSerializer):
 
 class ProductionSerializerRO(serializers.ModelSerializer):
 
+    user = serializers.SerializerMethodField('get_user')
     unity = serializers.SerializerMethodField('get_unity')
     area = serializers.SerializerMethodField('get_area')
     line = serializers.SerializerMethodField('get_line')
@@ -17,8 +18,11 @@ class ProductionSerializerRO(serializers.ModelSerializer):
 
     class Meta:
         model = Production
-        fields = ['unity', 'area', 'line', 'turn', 'is_ok', 'is_bad', 'date']
+        fields = ['id', 'user', 'unity', 'area', 'line', 'turn', 'is_ok', 'is_bad', 'date']
 
+
+    def get_user(self, Production):
+        return Production.user.username
     
     def get_unity(self, Production):
         try:
