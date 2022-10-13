@@ -16,12 +16,17 @@ class OperationTimeDetailsSerializer(serializers.ModelSerializer):
 
 
 class OperationTimeDetailsSerializerRO(serializers.ModelSerializer):
+
+    user = serializers.SerializerMethodField('get_user')
     line = serializers.SerializerMethodField('get_line')
     
     class Meta:
         model = OperationTimeDetails
-        fields = ['line', 'start', 'end', 'date']
+        fields = ['id', 'user', 'line', 'start', 'end', 'date']
         
+
+    def get_user(self, OperationTimeDetails):
+        return OperationTimeDetails.user.username
 
     def get_line(self, OperationTimeDetails):
         try:

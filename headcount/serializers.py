@@ -22,6 +22,7 @@ class PeopleOnTurnSerializer(serializers.ModelSerializer):
 
 class PeopleOnTurnSerializerRO(serializers.ModelSerializer):
 
+    user = serializers.SerializerMethodField('get_user')
     worker = serializers.SerializerMethodField('get_worker')
     unity = serializers.SerializerMethodField('get_unity')
     area = serializers.SerializerMethodField('get_area')
@@ -30,7 +31,10 @@ class PeopleOnTurnSerializerRO(serializers.ModelSerializer):
 
     class Meta:
         model = PeopleOnTurn
-        fields = ['id', 'worker', 'unity', 'area', 'line', 'turn', 'date']
+        fields = ['id', 'user', 'worker', 'unity', 'area', 'line', 'turn', 'date']
+
+    def get_user(self, PeopleOnTurn):
+        return PeopleOnTurn.user.username
 
     def get_worker(self, PeopleOnTurn):
         try:
