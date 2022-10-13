@@ -5,14 +5,18 @@ from rest_framework import status
 
 from pieces.models import Production
 from pieces.serializers import ProductionSerializer
+from latest_records.utils import custom_log_entries
 
 
 class CreateProductionReport(APIView):
     '''View to register production report'''
     def post(self, request):
         serializer = ProductionSerializer(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()
+            
+            custom_log_entries(user_id=serializer.data['user'], model_name=Production, object_id=serializer.data['id'],  obj_repr=serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
