@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from authentication.models import CustomUser
-from accidents.models import LineNumber, Turns
+from accidents.models import LineNumber
 
 
 class DowntimeDetails(models.Model):

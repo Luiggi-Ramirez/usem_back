@@ -5,6 +5,7 @@ from datetime import timedelta
 
 from .models import OperationTimeDetails
 from .serializers import OperationTimeDetailsSerializer
+from latest_records.utils import custom_log_entries
 
 
 class CreateOperationTimeReport(APIView):
@@ -13,6 +14,9 @@ class CreateOperationTimeReport(APIView):
         serializer = OperationTimeDetailsSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            
+            custom_log_entries(user_id=serializer.data['user'], model_name=OperationTimeDetails, object_id=serializer.data['id'],  obj_repr=serializer.data)
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
@@ -59,7 +63,8 @@ class OperationTimeView(APIView):
                 '''convert the result in hours and save it in a new property called
                 "operation_time" in the serializer object'''
                 serialized_data[i]['operation_time'] = {
-                    "time": f'{timedelta(hours=round(result.total_seconds() / 3600), minutes=round(result.total_seconds() / 60 % 60))}'
+                    "hours": round(result.total_seconds() / 3600),
+                    "minutes": round(result.total_seconds() / 60 % 60)
                     }
 
                 '''convert the result in hours and save it in the list
@@ -93,7 +98,8 @@ class OperationTimeView(APIView):
             print(total_operation_time)
             # Save the total operation time in the json that will be sent as a response
             total_res["total_op_time"] = {
-                "time": f'{timedelta(hours=round(total_operation_time), minutes=round(total_operation_time * 60 % 60))}'
+                "hours": round(total_operation_time),
+                "minutes": round(total_operation_time * 60 % 60)
                 
             }
         

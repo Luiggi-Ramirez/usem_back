@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 
-
+from latest_records.utils import custom_log_entries
 from incidents.models import IncidentDetails
 from incidents.serializers import IncidentDetailsSerializer
+
 
 
 
@@ -15,6 +16,8 @@ class CreateIncidentReport(APIView):
         serializer = IncidentDetailsSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
+            custom_log_entries(user_id=serializer.data['user'], model_name=IncidentDetails, object_id=serializer.data['id'],  obj_repr=serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 

@@ -1,10 +1,9 @@
-from tracemalloc import start
-from urllib import request
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from datetime import timedelta
 
+from latest_records.utils import custom_log_entries
 from .models import DowntimeDetails
 from .serializers import DowntimeDetailsSerializer
 
@@ -15,6 +14,8 @@ class CreateDownTimeReport(APIView):
         serializer = DowntimeDetailsSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+
+            custom_log_entries(user_id=serializer.data['user'], model_name=DowntimeDetails, object_id=serializer.data['id'],  obj_repr=serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 

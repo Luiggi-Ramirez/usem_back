@@ -4,6 +4,7 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from latest_records.utils import custom_log_entries
 from accidents.models import *
 from authentication.models import CustomUser
 from accidents.serializers import *
@@ -26,8 +27,10 @@ class CreatAccidentReport(APIView):
             turn = Turns.objects.get(id = turn_id)
             accident_type = AccidentType.objects.get(id = accident_type_id)
             
-            Accidents.objects.create(user = user, business_unity = b_u, area = area, line_number = line_number, turn = turn, accident_type = accident_type, description = description, date= date)
-            
+            save_data = Accidents.objects.create(user = user, business_unity = b_u, area = area, line_number = line_number, turn = turn, accident_type = accident_type, description = description, date= date)
+
+            custom_log_entries(user_id=user_id, model_name=Accidents, object_id=save_data.pk,  obj_repr=save_data)
+             
             data = {'msg': 'Reporte de accidente creado'}
             code = status.HTTP_201_CREATED
         except Exception as error:
