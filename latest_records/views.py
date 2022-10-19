@@ -27,45 +27,46 @@ class LatestRecords(APIView):
     '''view to list the data of all the endpoints that save data, in order of creation'''
     def get(self, request):
 
-        logs = LogEntry.objects.order_by('-action_time')[:5]
+        logs = LogEntry.objects.order_by('-action_time')[:10]
         latest_records=[]
         for log in logs:
             if log.action_flag == 1:
                 
                 model = log.content_type.model
+                options = ['accidents', 'downtimedetails', 'peopleonturn', 'incidentdetails', 'operationtimedetails', 'production'] #ignore all the log entries that don't match
+                if model not in options:
+                    continue
                 
-                if model == 'accidents':
-                    query = Accidents.objects.filter(id = log.object_id)
-                    serializer = AccidentsSerializer(query, many=True)
-                    serializer.data[0]["type"] = "accident report"
+                match model:
+                    case 'accidents':
+                        query = Accidents.objects.filter(id = log.object_id)
+                        serializer = AccidentsSerializer(query, many=True)
+                        serializer.data[0]["type"] = "accident report"
+                    case 'downtimedetails':
+                        query = DowntimeDetails.objects.filter(id = log.object_id)
+                        serializer = DowntimeDetailsSerializerRO(query, many=True)
+                        serializer.data[0]["type"] = "Down time report"
+                    case 'peopleonturn':
+                        query = PeopleOnTurn.objects.filter(id = log.object_id)
+                        serializer = PeopleOnTurnSerializerRO(query, many=True)
+                        serializer.data[0]["type"] = "Headcount report"
+                    case 'incidentdetails':
+                        query = IncidentDetails.objects.filter(id = log.object_id)
+                        serializer = IncidentDetailsSerializerRO(query, many=True)
+                        serializer.data[0]["type"] = "Incident report"
+                    case 'operationtimedetails':
+                        query = OperationTimeDetails.objects.filter(id = log.object_id)
+                        serializer = OperationTimeDetailsSerializerRO(query, many=True)
+                        serializer.data[0]["type"] = "operation time report"
+                    case 'production':          
+                        query = Production.objects.filter(id = log.object_id)
+                        serializer = ProductionSerializerRO(query, many=True)
+                        serializer.data[0]["type"] = "production report"
+                    case _:
+                        return Response([], status=status.HTTP_404_NOT_FOUND)
 
-                if model == 'downtimedetails':
-                    query = DowntimeDetails.objects.filter(id = log.object_id)
-                    serializer = DowntimeDetailsSerializerRO(query, many=True)
-                    serializer.data[0]["type"] = "Down time report"
-
-                if model == 'peopleonturn':
-                    query = PeopleOnTurn.objects.filter(id = log.object_id)
-                    serializer = PeopleOnTurnSerializerRO(query, many=True)
-                    serializer.data[0]["type"] = "Headcount report"
-                    
-                if model == 'incidentdetails':
-                    query = IncidentDetails.objects.filter(id = log.object_id)
-                    serializer = IncidentDetailsSerializerRO(query, many=True)
-                    serializer.data[0]["type"] = "Incident report"
-
-                if model == 'operationtimedetails':
-                    query = OperationTimeDetails.objects.filter(id = log.object_id)
-                    serializer = OperationTimeDetailsSerializerRO(query, many=True)
-                    serializer.data[0]["type"] = "operation time report"
-
-                if model == 'production':
-                    query = Production.objects.filter(id = log.object_id)
-                    serializer = ProductionSerializerRO(query, many=True)
-                    serializer.data[0]["type"] = "production report"
-
-                
                 latest_records.append(serializer.data[0])
+                latest_records = latest_records[:5]
                 
         
         return Response(latest_records, status=status.HTTP_200_OK)
