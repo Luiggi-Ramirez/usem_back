@@ -107,5 +107,6 @@ class ListAccidentsByDate(generics.ListAPIView):
     def get_queryset(self):
         from_date = dateparse.parse_date(self.request.query_params.get('from-date'))
         to_date = dateparse.parse_date(self.request.query_params.get('to-date'))
-        queryset = Accidents.objects.filter(date__range = [from_date, to_date])
+        line_id = self.request.query_params.get('line-id')
+        queryset = Accidents.objects.filter(date__range = [from_date, to_date], line_number__id = line_id)
         return queryset
