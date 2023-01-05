@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'fake_api',
     'headcount',
     'latest_records',
+    'misc',
 ]
 
 MIDDLEWARE = [
