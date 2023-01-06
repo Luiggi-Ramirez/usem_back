@@ -8,6 +8,6 @@ from .serializers import AreaByBUSerializer
 
 class ListAreaByUB(APIView):
     def post(self, request):
-        business_unity_id = int(request.data['business_unity_id'])
-        areas = Area.objects.filter(business_unity=business_unity_id)
+        business_unity = request.data['business_unity']
+        areas = Area.objects.filter(business_unity__name=business_unity)
         return Response(AreaByBUSerializer(areas,many=True).data, status = status.HTTP_200_OK)
