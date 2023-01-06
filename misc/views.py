@@ -6,9 +6,7 @@ from rest_framework.views import APIView
 from .serializers import GetAreasSerializers,LineNumberAreaSerializer
 from accidents.models import Area,LineNumber
 
-from django.db.models import Subquery, OuterRef
 from django.shortcuts import get_object_or_404
-
 
 class GetAllAreas(APIView):
     def get(self, request):
@@ -19,17 +17,14 @@ class GetAllAreas(APIView):
 
 
 class AreaLineView(APIView):
-    def get(self, request):
-        areas = Area.objects.all()
-        data = []
-        for area in areas:
-            lines = LineNumber.objects.filter(area=area).order_by('name')
-            serializer = GetAreasSerializers(area)
-            area_data = serializer.data
-            area_data['lines'] = LineNumberAreaSerializer(lines, many=True).data
-            data.append(area_data)
-        return Response(data, status=status.HTTP_200_OK)
+    def get(self, request, pk):
+        
+        area = get_object_or_404(Area, pk=pk)
+        lines = LineNumber.objects.filter(area=area).order_by('name')
+        area_data = GetAreasSerializers(area).data
+        area_data['lines'] = LineNumberAreaSerializer(lines, many=True).data
 
+        return Response(area_data, status=status.HTTP_200_OK)
 
 
 
