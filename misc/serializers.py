@@ -9,11 +9,10 @@ class GetAreasSerializers(serializers.ModelSerializer):
         fields = ('id', 'area_name')
 
 class LineNumberAreaSerializer(serializers.ModelSerializer):
-    line_name = serializers.CharField(source='name')
     
     class Meta:
         model = LineNumber
-        fields = ('line_name',)
+        fields = '__all__'
 
 
 class BusinessUnitySerializer(serializers.ModelSerializer):
