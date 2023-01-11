@@ -15,3 +15,13 @@ class LineNumberAreaSerializer(serializers.ModelSerializer):
         model = LineNumber
         fields = ('line_name',)
 
+
+class BusinessUnitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BusinessUnity
+        fields = '__all__'
+
+class AreaByBUSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Area
+        fields = '__all__'

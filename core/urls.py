@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/operation-time/', include('OT.urls')),
     path('api/headcount/', include('headcount.urls')),
     path('api/latest-records/', include('latest_records.urls')),
+    path('api/misc/',include('misc.urls')),
     path('fake_api/', include('fake_api.urls')),
 
     path('api/misc/', include('misc.urls')),

@@ -1,10 +1,10 @@
 # Create your views here.
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import GetAreasSerializers,LineNumberAreaSerializer
-from accidents.models import Area,LineNumber
+from .serializers import GetAreasSerializers,LineNumberAreaSerializer, AreaByBUSerializer, BusinessUnitySerializer
+from accidents.models import *
 
 from django.shortcuts import get_object_or_404
 
@@ -27,5 +27,16 @@ class AreaLineView(APIView):
         return Response(area_data, status=status.HTTP_200_OK)
 
 
+class ListBusinessUnity(generics.ListAPIView):
+    
+    serializer_class = BusinessUnitySerializer
+    def get_queryset(self):
+        return BusinessUnity.objects.all()
+    
 
-
+class ListAreaByUB(generics.ListAPIView):
+    
+    serializer_class = AreaByBUSerializer
+    def get_queryset(self):
+        business_unity = self.request.query_params.get('business_unity')
+        return Area.objects.filter(business_unity__name=business_unity)
